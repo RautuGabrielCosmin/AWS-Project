@@ -1,0 +1,34 @@
+{
+  "AlarmActions": [
+    "arn:aws:sns:eu-central-1:585768186423:billing-alarm"
+  ],
+  "AlarmName": "EC2_NetworkIn_Anomaly_Alarm",
+  "AlarmDescription": "Trigger when EC2 NetworkIn is outside normal traffic volume",
+  "Metrics": [
+    {
+      "Id": "m1",
+      "ReturnData": true,
+      "MetricStat": {
+        "Metric": {
+          "MetricName": "NetworkIn",
+          "Namespace": "AWS/EC2",
+          "Dimensions": [
+            {
+              "Name": "InstanceId",
+              "Value": "i-024de5ace7c560660"
+            }
+          ]
+        },
+        "Stat": "Average",
+        "Period": 300
+      }
+    },
+    {
+      "Id": "t1",
+      "Expression": "ANOMALY_DETECTION_BAND(m1, 2)"
+    }
+  ],
+  "EvaluationPeriods": 2,
+  "ThresholdMetricId": "t1",
+  "ComparisonOperator": "LessThanLowerOrGreaterThanUpperThreshold"
+}
